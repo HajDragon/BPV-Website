@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arshia Azadian - BPV Evaluatie Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fcfaf7;
+            color: #1e293b;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(226, 232, 240, 1);
+            transition: all 0.3s ease;
+        }
+
+        .nav-link.active {
+            border-bottom: 2px solid #b45309;
+            color: #b45309;
+        }
+
+        .scroll-mt {
+            scroll-margin-top: 100px;
+        }
+
+        .status-badge {
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+<!-- Chosen Palette: Warm Professional (Cream, Slate Blue, Amber) -->
+<!-- Application Structure Plan: 
+    De SPA is getransformeerd van een statisch document naar een interactieve verkenningstocht.
+    1. Executive Summary Dashboard: Kerncijfers direct bovenaan voor snelle consumptie.
+    2. Competentie-analyse: Een radar-chart visualiseert de groei van school- naar praktijkkennis.
+    3. BPV-Voortgang: Een interactieve lijst vervangt de droge opsomming van schooltaken.
+    4. De Mindset-Switch: Een interactieve vergelijking tussen de rollen 'Student' en 'Werknemer' om de persoonlijke groei te benadrukken.
+    Deze opzet is gekozen omdat het de lezer (begeleider of praktijkopleider) toestaat om direct de resultaten en de reflectie te zien zonder door paginalange tekstblokken te hoeven bladeren.
+-->
+<!-- Visualization & Content Choices: 
+    - Radar Chart (Canvas/Chart.js): Vergelijking van vaardigheden (Goal: Compare).
+    - Bar Chart (Canvas/Chart.js): Toekomstvisie en focusgebieden (Goal: Change/Interest).
+    - Stat-Cards: Voor kernmetrieken zoals tevredenheid en tempo (Goal: Inform).
+    - Toggle Interface: Voor de gedragsverandering student vs werknemer.
+    - CONFIRMATION: Geen SVG-iconen gebruikt. Geen Mermaid JS gebruikt. Alle visuele elementen zijn CSS, Canvas of text-based.
+-->
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+<nav class="fixed top-0 w-full bg-white border-b border-slate-200 z-50">
+    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+        <span class="font-bold text-amber-800 tracking-tight">BPV EVALUATIE 2026</span>
+        <div class="hidden md:flex space-x-8">
+            <a href="#dashboard" class="text-sm font-medium hover:text-amber-700">Dashboard</a>
+            <a href="#techniek" class="text-sm font-medium hover:text-amber-700">Techniek</a>
+            <a href="#taken" class="text-sm font-medium hover:text-amber-700">Taken</a>
+            <a href="#groei" class="text-sm font-medium hover:text-amber-700">Groei</a>
+        </div>
+    </div>
+</nav>
+
+<main class="max-w-5xl mx-auto px-4 pt-24 pb-20">
+    <!-- Header -->
+    <header class="mb-16">
+        <div class="inline-block px-3 py-1 bg-amber-100 text-amber-800 text-xs font-bold rounded mb-4">SUMMA EXPERIENCE LAB</div>
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-4 text-slate-900 leading-tight">
+            Arshia Azadian: <br><span class="text-amber-600 font-light italic">Evaluatie Meewerkstage</span>
+        </h1>
+        <p class="text-lg text-slate-600 max-w-2xl leading-relaxed">
+            Een overzicht van de transformatie van Software Student naar IoT-Specialist tijdens de BPV-periode van maart tot juni 2026.
+        </p>
+    </header>
+
+    <!-- Stat Dashboard -->
+    <section id="dashboard" class="scroll-mt mb-20">
+        <div class="mb-8">
+            <h2 class="text-xl font-bold border-l-4 border-amber-500 pl-4 mb-2 uppercase tracking-wide text-slate-800 text-sm">Kerncijfers</h2>
+            <p class="text-slate-500 text-sm italic">De stage samengevat in drie kritieke prestatie-indicatoren.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="glass-card p-8 rounded-lg shadow-sm">
+                <div class="text-xs font-bold text-slate-400 mb-2 uppercase">Werksfeer</div>
+                <div class="text-4xl font-black text-amber-600">10 / 10</div>
+                <div class="mt-4 text-xs text-slate-500 font-medium">Beoordeling Summa Lab</div>
+            </div>
+            <div class="glass-card p-8 rounded-lg shadow-sm">
+                <div class="text-xs font-bold text-slate-400 mb-2 uppercase">Werktempo</div>
+                <div class="text-4xl font-black text-slate-800">HOOG</div>
+                <div class="mt-4 text-xs text-slate-500 font-medium">Focus op snelle oplevering</div>
+            </div>
+            <div class="glass-card p-8 rounded-lg shadow-sm">
+                <div class="text-xs font-bold text-slate-400 mb-2 uppercase">Koffieconsumptie</div>
+                <div class="text-4xl font-black text-slate-800">MAX</div>
+                <div class="mt-4 text-xs text-slate-500 font-medium">Vloeibare brandstof</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Comparison Section -->
+    <section id="techniek" class="scroll-mt mb-20">
+        <div class="mb-10">
+            <h2 class="text-xl font-bold border-l-4 border-amber-500 pl-4 mb-2 uppercase tracking-wide text-slate-800 text-sm">Vaardigheden & Techniek</h2>
+            <p class="text-slate-600">De verschuiving van software-frameworks (School) naar hardware-integratie (Stage) gevisualiseerd in een radar-analyse.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div class="chart-container">
+                <canvas id="skillsChart"></canvas>
+            </div>
+            <div class="space-y-4">
+                <div class="p-6 bg-slate-50 rounded-lg border border-slate-200">
+                    <h4 class="font-bold text-sm text-slate-800 mb-3 uppercase tracking-wider">Nieuwe Stack</h4>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-white border border-slate-300 text-xs font-bold text-slate-600">Arduino</span>
+                        <span class="px-3 py-1 bg-white border border-slate-300 text-xs font-bold text-slate-600">Home Assistant</span>
+                        <span class="px-3 py-1 bg-white border border-slate-300 text-xs font-bold text-slate-600">Logic Boards</span>
+                        <span class="px-3 py-1 bg-white border border-slate-300 text-xs font-bold text-slate-600">IoT Sensors</span>
+                        <span class="px-3 py-1 bg-white border border-slate-300 text-xs font-bold text-slate-600">Low-Power Netwerken</span>
+                    </div>
+                </div>
+                <p class="text-sm text-slate-600 leading-relaxed">
+                    Tijdens de stage is de basis van school (C#, Laravel, FastAPI) uitgebreid met diepgaande hardware-kennis voor het project 'Smart Room'. De focus verschoof van puur code naar de interactie tussen hardware en de menselijke gebruiker.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- School Tasks Section -->
+    <section id="taken" class="scroll-mt mb-20">
+        <div class="mb-8">
+            <h2 class="text-xl font-bold border-l-4 border-amber-500 pl-4 mb-2 uppercase tracking-wide text-slate-800 text-sm">BPV Opdrachten</h2>
+            <p class="text-slate-600">Een interactief overzicht van de vier verplichte schoolopdrachten.</p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="task-container">
+            <!-- Rendered via JS -->
+        </div>
+        <div id="task-panel" class="mt-4 p-6 bg-amber-50 rounded border border-amber-100 hidden">
+            <h4 id="panel-title" class="font-bold text-slate-900 mb-2"></h4>
+            <p id="panel-desc" class="text-sm text-slate-700 leading-relaxed"></p>
+        </div>
+    </section>
+
+    <!-- Growth & Future Section -->
+    <section id="groei" class="scroll-mt mb-20 bg-slate-900 text-white p-10 rounded-lg">
+        <div class="flex flex-col md:flex-row justify-between items-start mb-12 gap-6">
+            <div class="max-w-xl">
+                <h2 class="text-2xl font-black mb-4 uppercase tracking-tighter">De Transformatie</h2>
+                <p class="text-slate-400 text-sm leading-relaxed">De transitie van student naar volwaardig teamlid. Gebruik de knop om het perspectief te wijzigen.</p>
+            </div>
+            <button onclick="toggleGrowth()" id="mode-btn" class="bg-amber-600 hover:bg-amber-500 px-6 py-3 rounded text-xs font-bold uppercase tracking-widest transition-all">
+                Switch naar Werknemer
+            </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="growth-grid">
+            <div id="student-box" class="p-8 border border-amber-600/30 bg-amber-600/5 rounded-lg">
+                <h3 class="text-amber-500 font-bold mb-4 uppercase text-xs tracking-widest">Perspectief: Student</h3>
+                <ul class="space-y-4 text-sm text-slate-300">
+                    <li>[ SCHOOL ] Individuele opdrachten en vaste kaders.</li>
+                    <li>[ SCHOOL ] Focus op theoretische perfectie van code.</li>
+                    <li>[ SCHOOL ] Afhankelijk van docent voor instructies.</li>
+                </ul>
+            </div>
+            <div id="worker-box" class="p-8 border border-slate-700 opacity-30 transition-all duration-500 rounded-lg">
+                <h3 class="text-slate-500 font-bold mb-4 uppercase text-xs tracking-widest">Perspectief: Werknemer</h3>
+                <ul class="space-y-4 text-sm text-slate-500">
+                    <li>[ STAGE ] Samenwerken aan echte eindgebruikers-oplossingen.</li>
+                    <li>[ STAGE ] Focus op bruikbaarheid en hardware-integratie.</li>
+                    <li>[ STAGE ] Vrijheid voor creativiteit en proactieve inbreng.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conclusion Section -->
+    <section id="toekomst" class="scroll-mt mb-20 text-center">
+        <div class="max-w-2xl mx-auto mb-12">
+            <h2 class="text-2xl font-bold text-slate-800 mb-4">Conclusie & Ambitie</h2>
+            <p class="text-slate-600 text-sm leading-relaxed">
+                De stage heeft bevestigd dat mijn passie bij ontwikkeling en innovatie ligt. Mijn ambitie is om door te stromen naar het HBO om me verder te specialiseren in complexe software- en IoT-systemen.
+            </p>
+        </div>
+        <div class="chart-container mb-8">
+            <canvas id="focusChart"></canvas>
+        </div>
+        <div class="border-t border-slate-200 pt-8 max-w-lg mx-auto">
+            <p class="text-sm font-medium text-slate-400 italic">"Wat voor mij als developer logisch is, kan voor een gebruiker een raadsel zijn. Dit inzicht is mijn grootste winst."</p>
+            <div class="mt-4 text-xs font-bold text-slate-800 uppercase tracking-widest">Arshia Azadian</div>
+        </div>
+    </section>
+</main>
+
+<footer class="bg-white py-12 border-t border-slate-200">
+    <div class="max-w-5xl mx-auto px-4 text-center">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest leading-loose">
+            Eindverslag BPV Stage 2026 / Summa College / Experience Lab
+        </p>
+    </div>
+</footer>
+
+<script>
+    const taskData = [
+        { title: "Taak 1: Oriëntatie", status: "100%", color: "bg-green-600", desc: "Het in kaart brengen van de organisatiestructuur van Summa en de rol van softwareontwikkeling hierbinnen." },
+        { title: "Taak 2: Development", status: "100%", color: "bg-green-600", desc: "Onderzoek naar de gebruikte ontwikkelmethodieken en test-omgevingen binnen het lab." },
+        { title: "Taak 3: Werknemer", status: "100%", color: "bg-green-600", desc: "Evaluatie van Arbo-normen en bedrijfsregels rondom internetgebruik en werkplek-ergonomie." },
+        { title: "Taak 4: Vrije Keuze", status: "VOLTOOID", color: "bg-amber-600", desc: "Specialisatie in IoT-protocollen en dashboard-integratie voor de Smart Room simulaties." }
+    ];
+
+    function init() {
+        renderTasks();
+        renderCharts();
+    }
+
+    function renderTasks() {
+        const container = document.getElementById('task-container');
+        taskData.forEach((task, index) => {
+            const btn = document.createElement('button');
+            btn.className = "flex flex-col text-left p-4 bg-white border border-slate-200 hover:border-amber-500 rounded transition-all";
+            btn.innerHTML = `
+                <div class="text-[10px] font-bold text-slate-400 mb-1 uppercase">${task.status}</div>
+                <div class="text-xs font-bold text-slate-800">${task.title}</div>
+            `;
+            btn.onclick = () => showTask(index);
+            container.appendChild(btn);
+        });
+    }
+
+    function showTask(index) {
+        const panel = document.getElementById('task-panel');
+        const title = document.getElementById('panel-title');
+        const desc = document.getElementById('panel-desc');
+        const task = taskData[index];
+
+        title.textContent = task.title;
+        desc.textContent = task.desc;
+        panel.classList.remove('hidden');
+        panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    let isWorker = false;
+    function toggleGrowth() {
+        isWorker = !isWorker;
+        const btn = document.getElementById('mode-btn');
+        const sBox = document.getElementById('student-box');
+        const wBox = document.getElementById('worker-box');
+        const sHeader = sBox.querySelector('h3');
+        const wHeader = wBox.querySelector('h3');
+        const sList = sBox.querySelector('ul');
+        const wList = wBox.querySelector('ul');
+
+        if(isWorker) {
+            btn.textContent = "Switch naar Student";
+            wBox.classList.remove('opacity-30', 'border-slate-700');
+            wBox.classList.add('border-green-600/30', 'bg-green-600/5');
+            wHeader.classList.replace('text-slate-500', 'text-green-500');
+            wList.classList.replace('text-slate-500', 'text-slate-300');
+            
+            sBox.classList.add('opacity-30');
+            sBox.classList.remove('bg-amber-600/5', 'border-amber-600/30');
+            sHeader.classList.replace('text-amber-500', 'text-slate-500');
+            sList.classList.replace('text-slate-300', 'text-slate-500');
+        } else {
+            btn.textContent = "Switch naar Werknemer";
+            sBox.classList.remove('opacity-30');
+            sBox.classList.add('border-amber-600/30', 'bg-amber-600/5');
+            sHeader.classList.replace('text-slate-500', 'text-amber-500');
+            sList.classList.replace('text-slate-500', 'text-slate-300');
+
+            wBox.classList.add('opacity-30', 'border-slate-700');
+            wBox.classList.remove('border-green-600/30', 'bg-green-600/5');
+            wHeader.classList.replace('text-green-500', 'text-slate-500');
+            wList.classList.replace('text-slate-300', 'text-slate-500');
+        }
+    }
+
+    function renderCharts() {
+        // Radar Chart
+        new Chart(document.getElementById('skillsChart'), {
+            type: 'radar',
+            data: {
+                labels: ['Software Dev', 'IoT / Hardware', 'C# / Laravel', 'Samenwerking', 'Architectuur', 'Onderzoek'],
+                datasets: [{
+                    label: 'Start (School)',
+                    data: [8, 2, 8, 5, 4, 6],
+                    backgroundColor: 'rgba(148, 163, 184, 0.2)',
+                    borderColor: '#94a3b8',
+                    borderWidth: 2,
+                    pointRadius: 0
+                }, {
+                    label: 'Einde (Stage)',
+                    data: [9, 9, 7, 9, 8, 9],
+                    backgroundColor: 'rgba(180, 83, 9, 0.2)',
+                    borderColor: '#b45309',
+                    borderWidth: 2,
+                    pointRadius: 0
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 10,
+                        grid: { color: '#e2e8f0' },
+                        angleLines: { color: '#e2e8f0' },
+                        ticks: { display: false }
+                    }
+                },
+                plugins: {
+                    legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } }
+                }
+            }
+        });
+
+        // Horizontal Bar Chart
+        new Chart(document.getElementById('focusChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Web Development', 'IoT Development', 'System Administration', 'Maintenance VR'],
+                datasets: [{
+                    label: 'Passie Niveau',
+                    data: [9.8, 9.5, 7, 3],
+                    backgroundColor: ['#b45309', '#d97706', '#f59e0b', '#cbd5e1'],
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: { max: 10, ticks: { font: { size: 10 } } },
+                    y: { ticks: { font: { size: 10, weight: 'bold' } } }
+                }
+            }
+        });
+    }
+
+    window.onload = init;
+</script>
+</body>
+</html>
